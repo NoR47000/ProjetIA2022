@@ -72,16 +72,7 @@ namespace ProjetIA2022
             if (Form1.numenv == 1)
             {
 
-                double coefDir = (Form1.yinitial - Form1.yfinal) / (Form1.xinitial - Form1.xfinal);
-
-                // Test au voisinage du point
-                for (int i = -1; i < 2; i++)
-                {
-                    for(int j = -1; j < 2; j++)
-                    {
-
-                    }
-                }
+                GetArcCost(this.);
             }
             
 
