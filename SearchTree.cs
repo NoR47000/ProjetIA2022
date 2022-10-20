@@ -146,7 +146,9 @@ namespace ProjetIA2022
         {
             // Insertion pour respecter l'ordre du cout total le plus petit au plus grand
             if (this.L_Ouverts.Count == 0)
-            { L_Ouverts.Add(NewNode); }
+            {
+                L_Ouverts.Add(NewNode);
+            }
             else
             {
                 GenericNode N = L_Ouverts[0];
