@@ -22,6 +22,7 @@ namespace ProjetIA2022
         static public int yinitial;
         static public int xfinal;
         static public int yfinal;
+        static public int numenv;
         static Graphics g;
         public Form1()
         {
@@ -207,17 +208,20 @@ namespace ProjetIA2022
         private void buttonInit1_Click(object sender, EventArgs e)
         {
             load_environment("environnement1.txt");
+            numenv = 1;
             buttonAstar.Enabled = true;
         }
         private void buttonInit2_Click(object sender, EventArgs e)
         {
             load_environment("environnement2.txt");
+            numenv = 2;
             buttonAstar.Enabled = true;
         }
 
         private void buttonInit3_Click(object sender, EventArgs e)
         {
             load_environment("environnement3.txt");
+            numenv = 3;
             buttonAstar.Enabled = true;
         }
     }

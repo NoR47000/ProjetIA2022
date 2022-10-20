@@ -61,7 +61,31 @@ namespace ProjetIA2022
 
         public override double CalculeHCost()
         {
-            return( 0 );
+
+            //x et y du noeaud exa,iné
+            //Form1.xinitial et Form1.yinitial qui sont accessible car static
+            //Form1.xfinal Form1.yfinal
+            //matrice[x,y] indique le type de case (-1 si marécage, 0 si rien, -2 si obstacle)  
+
+            // Heuristique linéaire pour l'environnement 1
+
+            if (Form1.numenv == 1)
+            {
+
+                double coefDir = (Form1.yinitial - Form1.yfinal) / (Form1.xinitial - Form1.xfinal);
+
+                // Test au voisinage du point
+                for (int i = -1; i < 2; i++)
+                {
+                    for(int j = -1; j < 2; j++)
+                    {
+
+                    }
+                }
+            }
+            
+
+            return ( 0 );
            
         }
 
