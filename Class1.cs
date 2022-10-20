@@ -61,7 +61,14 @@ namespace ProjetIA2022
 
         public override double CalculeHCost()
         {
-            return( 0 );
+
+            //x et y du noeaud exa,iné
+            //Form1.xinitial et Form1.yinitial qui sont accessible car static
+            //Form1.xfinal Form1.yfinal
+            //matrice[x,y] indique le type de case (-1 si marécage, 0 si rien, -2 si obstacle)  
+
+
+            return ( 0 );
            
         }
 
