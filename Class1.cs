@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjetIA2022
 {
-    public class Node2 : GenericNode 
+    public class Node2 : GenericNode
     {
         public int x;
         public int y;
@@ -23,10 +23,10 @@ namespace ProjetIA2022
         {
             // Ici, N2 ne peut être qu'1 des 8 voisins, inutile de le vérifier
             Node2 N2bis = (Node2)N2;
-            double dist = Math.Sqrt((N2bis.x-x)*(N2bis.x-x)+(N2bis.y-y)*(N2bis.y-y));
+            double dist = Math.Sqrt((N2bis.x - x) * (N2bis.x - x) + (N2bis.y - y) * (N2bis.y - y));
             if (Form1.matrice[x, y] == -1)
                 // On triple le coût car on est dans un marécage
-                dist = dist*3;
+                dist = dist * 3;
             return dist;
         }
 
@@ -39,7 +39,7 @@ namespace ProjetIA2022
         {
             List<GenericNode> lsucc = new List<GenericNode>();
 
-            for (int dx=-1; dx <= 1; dx++)
+            for (int dx = -1; dx <= 1; dx++)
             {
                 for (int dy = -1; dy <= 1; dy++)
                 {
@@ -62,19 +62,19 @@ namespace ProjetIA2022
         public override double CalculeHCost()
         {
 
-            //x et y du noeaud exa,iné
+            //x et y du noeaud examiné
             //Form1.xinitial et Form1.yinitial qui sont accessible car static
             //Form1.xfinal Form1.yfinal
             //matrice[x,y] indique le type de case (-1 si marécage, 0 si rien, -2 si obstacle)  
 
 
-            return ( 0 );
-           
+            return (0);
+
         }
 
         public override string ToString()
         {
-            return Convert.ToString(x)+","+ Convert.ToString(y);
+            return Convert.ToString(x) + "," + Convert.ToString(y);
         }
     }
 }
