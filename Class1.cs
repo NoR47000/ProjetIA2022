@@ -65,9 +65,22 @@ namespace ProjetIA2022
             //x et y du noeaud examiné
             //Form1.xinitial et Form1.yinitial qui sont accessible car static
             //Form1.xfinal Form1.yfinal
-            //matrice[x,y] indique le type de case (-1 si marécage, 0 si rien, -2 si obstacle)  
+            //matrice[x,y] indique le type de case (-1 si marécage, 0 si rien, -2 si obstacle) 
 
+            //Problème 1 : 
 
+            return (Math.Sqrt((x - Form1.xfinal) ^ 2 + (y - Form1.yfinal) ^ 2));
+
+            //Problème 2 : Décomposition en 2 sous problèmes en passant par un point de passage
+
+            Node2 pointPassage = new Node2(10, 20);
+
+            if (x < 10)
+                return (Math.Sqrt((x - pointPassage.x) ^ 2 + (y - pointPassage.y) ^ 2));
+            else
+                return (Math.Sqrt((x - Form1.xfinal) ^ 2 + (y - Form1.yfinal) ^ 2));
+
+            //Problème 3 : 
             return (0);
 
         }
