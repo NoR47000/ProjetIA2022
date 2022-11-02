@@ -81,6 +81,22 @@ namespace ProjetIA2022
                 return (Math.Sqrt((x - Form1.xfinal) ^ 2 + (y - Form1.yfinal) ^ 2));
 
             //Problème 3 : 
+            Node2 pointInterdit1 = new Node2(1, 1);
+            Node2 pointInterdit2 = new Node2(1, 1);
+            //Devant l'entrée interdite
+            Node2 pointPassage1 = new Node2(1, 1);
+            //En haut
+            Node2 pointPassage2 = new Node2(10, 20);
+            if (x < 10)
+            {
+                if (x != pointInterdit1.x && x != pointInterdit2.x && y != pointInterdit1.y && y != pointInterdit2.y)
+                    return (Math.Sqrt((x - pointPassage1.x) ^ 2 + (y - pointPassage1.y) ^ 2));
+                else
+                    return (1000);
+            }
+            else
+                return (Math.Sqrt((x - Form1.xfinal) ^ 2 + (y - Form1.yfinal) ^ 2));
+
             return (0);
 
         }
