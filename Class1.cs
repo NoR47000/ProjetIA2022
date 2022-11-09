@@ -61,8 +61,7 @@ namespace ProjetIA2022
 
         public override double CalculeHCost()
         {
-
-             //x et y du noeaud examiné
+            //x et y du noeaud examiné
             //Form1.xinitial et Form1.yinitial qui sont accessible car static
             //Form1.xfinal Form1.yfinal
             //matrice[x,y] indique le type de case (-1 si marécage, 0 si rien, -2 si obstacle) 
@@ -102,21 +101,49 @@ namespace ProjetIA2022
             
             //Problème 3 : 
 
-            bool PI= true; // false si gauche true si droite
-            bool PF= true; // false si gauche true si droite
+            bool  PCCercle = true; // Le point courant est dans le cercle
+            bool  PFCercle = true; // Le point final est dans le cercle
 
-            //Test même côté
+            bool PCCote= true; // Le point courant est du côté droit
+            bool PFCote= true; // Le point final est du côté droit
+
+            bool  PFMarecages = true; // Le point est dans le marécage
+            bool  PCMarecages = true; // Le point est dans le marécage
+           
+            //Initialisation PCCercle
+            if(!(x>=3 && x<=8) || !(y>=4 && y<=9))
+            {
+                PCCercle = false;
+            }
+            //Initialisation PFCercle
+            if(!(Form1.xfinal>=3 && Form1.xfinal<=8) || !(Form1.yfinal>=4 && Form1.yfinal<=9))
+            {
+                PCCercle = false;
+            }
+            
+            // Initialisation PCCote
             if (x <= 10)
             {
-                PI= false;
+                PCCote= false;
             }
-
+            // Initialisation PFCote
             if (Form1.xfinal <= 10)
             {
-                PF= false;
+                PFCote= false;
             }
 
-            Node2 pointPassage = new Node2();
+            //Initialisation PFMarecages
+            if(Form1.yfinal >= 10)
+            {
+                PFMarecages= false; 
+            }
+            //Initialisation PCMarecages
+            if(y >= 10)
+            {
+                PCMarecages= false; 
+            }
+
+            Node2 pointPassageFrontiere = new Node2();
             pointPassage.x = 10;
             pointPassage.y = 0;
 
@@ -125,73 +152,131 @@ namespace ProjetIA2022
             pointPassageCercle.y = 6;
 
             double h1=Math.Abs(x - Form1.xfinal) + Math.Abs(y - Form1.yfinal);// Distance point actuel/point final
-            double h2=Math.Abs(x - pointPassage.x) + Math.Abs(y - pointPassage.y);// Distance point actuel/point passage
+            double h2=Math.Abs(x - pointPassageFrontiere.x) + Math.Abs(y - pointPassageFrontiere.y);// Distance point actuel/point passage
             double h3=Math.Abs(pointPassageCercle.x - x) + Math.Abs(pointPassageCercle.y - y);// Distance point actuel/point passage cercle
-            double h4=Math.Abs(pointPassageCercle.x - pointPassage.x) + Math.Abs(pointPassageCercle.y - pointPassage.y);// Distance point passage cercle/ point passage
-            double h5=Math.Abs(Form1.xfinal - pointPassage.x) + Math.Abs(Form1.yfinal - pointPassage.y);// Distance point passage/point final
+            double h4=Math.Abs(pointPassageCercle.x - pointPassageFrontiere.x) + Math.Abs(pointPassageCercle.y - pointPassageFrontiere.y);// Distance point passage cercle/ point passage
+            double h5=Math.Abs(Form1.xfinal - pointPassageFrontiere.x) + Math.Abs(Form1.yfinal - pointPassageFrontiere.y);// Distance point passage/point final
             double h6=Math.Abs(Form1.xfinal - pointPassageCercle.x) + Math.Abs(Form1.yfinal - pointPassageCercle.y);// Distance point passage cerlce/point final
 
-            //Test si points de départ et arrivée dans le cercle
-            //Point initial dans le cercle
-            if((x>=3 && x<=8) && (y>=4 && y<=9))
+            
+            //PC dans le cercle
+            if(PCCercle)
             {
-                if((Form1.xfinal>=3 && Form1.xfinal<=8) && (Form1.yfinal >=4 && Form1.yfinal <=9))
+                //PF dans le cercle
+                if(PFCercle)
                 {
-                     return h1;
+                    return(h1);
                 }
+                //PF en dehors du cercle
                 else
                 {
-                    // côtés différents
-                    if (PI != PF)
+                    //PF et PC du même côté
+                    if(PFCote=PCCote)
                     {
-                        return  h3 + h4 + h5;
+                        return(h3+h6);
                     }
-                    //Même coté
+                    //PF/PC côté différent
                     else
                     {
-                        return h3 + h6;
+                        //Marécages
+                        if(PFMarecages)
+                        {
+                            //Si le point est dans le marécage le coût du trajet
+                            //final entre PC et PF est multiplié par 3 comme pour
+                            //le trajet réel.
+                            return(h3+h4+3*h1);
+                        }
+                        //Non marécages
+                        else
+                        {
+                            return(h3+h4+3*h1);
+                        }
                     }
                 }
             }
-            // Point initial en dehors du cercle
+            //PC pas dans le cercle
             else
-            {
-                if((Form1.xfinal>=3 && Form1.xfinal<=8) && (Form1.yfinal >=4 && Form1.yfinal <=9))
-                {
-                     if (PI != PF)
-                    {
-                        return  h2 + h4 + h6;
+            { 
+                //PF dans le cercle 
+                if(PFCercle)
+                { 
+                    //PF et PC même côté
+                    if(PFCote=PCCote)
+                    { 
+                        return(h3+h1);
                     }
-                    //Même coté
+                    //PF/PC côté différent
                     else
                     {
-                        return h3 + h6;
+                        //Marécages
+                        if(PCMarecages)
+                        {
+                            //Si le point est dans le marécage le coût du trajet
+                            //final entre PC et PF est multiplié par 3 comme pour
+                            //le trajet réel.
+                            return(3*h2+h4+h1);
+                        }
+                        //Non marécages
+                        else
+                        {
+                            return(3*h2+h4+h1);
+                        }
                     }
                 }
+                //PF en dehors du cercle 
                 else
                 {
-                    // côtés différents
-                    if (PI != PF)
+                    //PF et PC même côté
+                    if(PFCote=PCCote)
                     {
-                        if(Form1.yinitial>=6 && Form1.yfinal<6)
+                        //Contourner Cercle ?
+                        if(!PFCote)
                         {
-                            return h2+h3+h5;
+                            if(y>6 && Form1.yfinal<6 || y<6 && Form1.yfinal>6)
+                            {
+                                return(h3+h6);
+                            }
+                            else
+                            {
+                                return(h1);
+                            }
                         }
-                        return  h2+h5;
+                        //Marécages ? 
+                        else
+                        {
+                            return(3*h1);
+                        }
                     }
-                    //Même coté
+                    //PF/PC côté différent 
                     else
                     {
-                        if(Form1.yinitial>=6 && Form1.yfinal < 6)
+                        if(!PFCote)
                         {
-                            return h1+h3;
+                            //Contourner Cercle 
+                            if(Form1.yfinal>6)
+                            {
+                                return(3*h2+h4+h6);
+                            }
+                            else
+                            {
+                                return(3*h2+h5);
+                            }
                         }
-                        return h1;
-                    }
+                        else
+                        {
+                            //Contourner Cercle 
+                            if(y>6)
+                            {
+                                return(h3+h4+3*h5);
+                            }
+                            else
+                            {
+                                return(h2+3*h5);
+                            }
+                        }
+                    } 
                 }
             }
-        }
-
         }
 
         public override string ToString()

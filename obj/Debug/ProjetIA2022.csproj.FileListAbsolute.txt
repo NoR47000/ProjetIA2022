@@ -20,3 +20,11 @@ C:\Users\nrichert\Desktop\ProjetIA2022\obj\Debug\ProjetIA2022.csproj.GenerateRes
 C:\Users\nrichert\Desktop\ProjetIA2022\obj\Debug\ProjetIA2022.csproj.CoreCompileInputs.cache
 C:\Users\nrichert\Desktop\ProjetIA2022\obj\Debug\ProjetIA2022.exe
 C:\Users\nrichert\Desktop\ProjetIA2022\obj\Debug\ProjetIA2022.pdb
+C:\Users\thomarenaud\Desktop\ProjetIA2022\obj\Debug\ProjetIA2022.csproj.AssemblyReference.cache
+C:\Users\thomarenaud\Desktop\ProjetIA2022\obj\Debug\ProjetIA2022.csproj.SuggestedBindingRedirects.cache
+C:\Users\thomarenaud\Desktop\ProjetIA2022\obj\Debug\ProjetIA2022.Form1.resources
+C:\Users\thomarenaud\Desktop\ProjetIA2022\obj\Debug\ProjetIA2022.Properties.Resources.resources
+C:\Users\thomarenaud\Desktop\ProjetIA2022\obj\Debug\ProjetIA2022.csproj.GenerateResource.cache
+C:\Users\thomarenaud\Desktop\ProjetIA2022\obj\Debug\ProjetIA2022.csproj.CoreCompileInputs.cache
+C:\Users\thomarenaud\Desktop\ProjetIA2022\obj\Debug\ProjetIA2022.exe
+C:\Users\thomarenaud\Desktop\ProjetIA2022\obj\Debug\ProjetIA2022.pdb
