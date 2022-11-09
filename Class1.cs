@@ -111,14 +111,14 @@ namespace ProjetIA2022
             bool  PCMarecages = true; // Le point est dans le marécage
            
             //Initialisation PCCercle
-            if(!(x>=3 && x<=8) || !(y>=4 && y<=9))
+            if(!((x>=3 && x<=8) && (y>=4 && y<=9)))
             {
                 PCCercle = false;
             }
             //Initialisation PFCercle
-            if(!(Form1.xfinal>=3 && Form1.xfinal<=8) || !(Form1.yfinal>=4 && Form1.yfinal<=9))
+            if(!((Form1.xfinal>=3 && Form1.xfinal<=8) && (Form1.yfinal>=4 && Form1.yfinal<=9)))
             {
-                PCCercle = false;
+                PFCercle = false;
             }
             
             // Initialisation PCCote
@@ -144,8 +144,8 @@ namespace ProjetIA2022
             }
 
             Node2 pointPassageFrontiere = new Node2();
-            pointPassage.x = 10;
-            pointPassage.y = 0;
+            pointPassageFrontiere.x = 10;
+            pointPassageFrontiere.y = 0;
 
             Node2 pointPassageCercle = new Node2();
             pointPassageCercle.x = 2;
