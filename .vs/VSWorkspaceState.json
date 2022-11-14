@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\bin",
+    "\\obj",
+    "\\obj\\Release",
+    "\\Properties"
   ],
   "SelectedNode": "\\Class1.cs",
   "PreviewInSolutionExplorer": false

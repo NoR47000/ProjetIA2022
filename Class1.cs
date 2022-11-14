@@ -61,14 +61,15 @@ namespace ProjetIA2022
 
         public override double CalculeHCost()
         {
-            //x et y du noeaud examiné
+            //x et y du noeud examiné
             //Form1.xinitial et Form1.yinitial qui sont accessible car static
-            //Form1.xfinal Form1.yfinal
-            //matrice[x,y] indique le type de case (-1 si marécage, 0 si rien, -2 si obstacle) 
+            //Form1.xfinal 
+            //Form1.yfinal
+            //matrice[x,y] //indique le type de case (-1 si marécage, 0 si rien, -2 si obstacle) 
 
             //Problème 1 : 
 
-            //return (Math.Abs(this.x - Form1.xfinal) + Maths.Abs(this.y - Form1.yfinal);
+            //return (Math.Abs(this.x - Form1.xfinal) + Math.Abs(this.y - Form1.yfinal));
 
             //Problème 2 : Décomposition en 2 sous problèmes en passant par un point de passage
             /*
@@ -103,7 +104,7 @@ namespace ProjetIA2022
 
 
             //Problème 3 : 
-
+            
             bool PCCercle = true; // Le point courant est dans le cercle
             bool PFCercle = true; // Le point final est dans le cercle
 
@@ -158,25 +159,33 @@ namespace ProjetIA2022
 
             // Défintion d'un point de sorti du marégage
             Node2 pointPassageMarecage = new Node2();
-            pointPassageMarecage.x = 11;
+            pointPassageMarecage.x = 12;
             pointPassageMarecage.y = 10;
 
             // Distance point courant/point final
             double h1 = Math.Abs(x - Form1.xfinal) + Math.Abs(y - Form1.yfinal);
+
             // Distance point courant/point passage frontière
             double h2 = Math.Abs(x - pointPassageFrontiere.x) + Math.Abs(y - pointPassageFrontiere.y);
+
             // Distance point courant/point passage cercle
             double h3 = Math.Abs(pointPassageCercle.x - x) + Math.Abs(pointPassageCercle.y - y);
+
             // Distance point passage cercle/ point passage frontière
             double h4 = Math.Abs(pointPassageCercle.x - pointPassageFrontiere.x) + Math.Abs(pointPassageCercle.y - pointPassageFrontiere.y);
+
             // Distance point passage frontière/point final
             double h5 = Math.Abs(Form1.xfinal - pointPassageFrontiere.x) + Math.Abs(Form1.yfinal - pointPassageFrontiere.y);
+
             // Distance point passage cerlce/point final
             double h6 = Math.Abs(Form1.xfinal - pointPassageCercle.x) + Math.Abs(Form1.yfinal - pointPassageCercle.y);
+
             // Distance point passage frontière/point passage marécage
             double h7 = Math.Abs(pointPassageMarecage.x - pointPassageFrontiere.x) + Math.Abs(pointPassageMarecage.y - pointPassageFrontiere.y);
+
             // Distance point passage marécage/point final
             double h8 = Math.Abs(pointPassageMarecage.x - Form1.xfinal) + Math.Abs(pointPassageMarecage.y - Form1.yfinal);
+
             // Distance point courant/point passage marécage
             double h9 = Math.Abs(pointPassageMarecage.x - x) + Math.Abs(pointPassageMarecage.y - y);
 
@@ -188,7 +197,7 @@ namespace ProjetIA2022
             distanceH.Add("PPCtoPPF", h4);
             distanceH.Add("PPFtoPF", h5);
             distanceH.Add("PPCtoPF", h6);
-            distanceH.Add("PPFtoPSM", h7);
+            distanceH.Add("PPFtoPPM", h7);
             distanceH.Add("PPMtoPF", h8);
             distanceH.Add("PCtoPPM", h9);
 
@@ -205,7 +214,7 @@ namespace ProjetIA2022
                 else
                 {
                     //PF et PC du même côté
-                    if (PFCote = PCCote)
+                    if (PFCote == PCCote)
                     {
                         return (distanceH["PCtoPPC"] + distanceH["PPCtoPF"]);
                     }
@@ -235,7 +244,7 @@ namespace ProjetIA2022
                 if (PFCercle)
                 {
                     //PF et PC même côté
-                    if (PFCote = PCCote)
+                    if (PFCote == PCCote)
                     {
                         return (distanceH["PCtoPPC"] + distanceH["PPCtoPF"]);
                     }
@@ -261,7 +270,7 @@ namespace ProjetIA2022
                 else
                 {
                     //PF et PC même côté
-                    if (PFCote = PCCote)
+                    if (PFCote == PCCote)
                     {
                         // Dans le cas où les points sont du côté gauche
                         // On va regarder s'il est necessaire de contourner le cercle
@@ -299,6 +308,11 @@ namespace ProjetIA2022
                                     return (distanceH["PCtoPPM"] + 3 * distanceH["PPMtoPF"]);
                                 }
                             }
+                            // Les deux points sont en dehors
+                            else
+                            {
+                                return (distanceH["PCtoPF"]);
+                            }
                         }
                     }
                     //PF/PC côté différent 
@@ -313,12 +327,12 @@ namespace ProjetIA2022
                                 // PC est dans le marécage
                                 if (PCMarecages)
                                 {
-                                    return (3 * distanceH["PCtoPPF"] + distanceH["PPFtoPPC"] + distanceH["PPCtoPF"]);
+                                    return (3 * distanceH["PCtoPPF"] + distanceH["PPCtoPPF"] + distanceH["PPCtoPF"]);
                                 }
                                 // PC est en dessous du marécage
                                 else
                                 {
-                                    return (distanceH["PCtoPPM"] + 3 * distanceH["PPMtoPPF"] + distanceH["PPFtoPPC"] + distanceH["PPCtoPF"]);
+                                    return (distanceH["PCtoPPM"] + 3 * distanceH["PPFtoPPM"] + distanceH["PPCtoPPF"] + distanceH["PPCtoPF"]);
                                 }
                             }
                             //On ne doit contourner le cercle 
