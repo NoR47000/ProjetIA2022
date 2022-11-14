@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,8 +70,76 @@ namespace ProjetIA2022
             //matrice[x,y] //indique le type de case (-1 si marécage, 0 si rien, -2 si obstacle) 
 
             //Problème 1 : 
+            
+            bool PCM = false; // Point courant pas dans le marécage
+            bool PFM = false; // Point final pas dans le marécage
 
-            //return (Math.Abs(this.x - Form1.xfinal) + Math.Abs(this.y - Form1.yfinal));
+            double distEucl =Math.Abs(this.x - Form1.xfinal) + Math.Abs(this.y - Form1.yfinal); // Distance euclidienne 
+            double distBM ; // Distance du point au bord du marécage
+            double distBMPF ; // Distance du bord du marécage au point final
+            double distBMPC ; // Distance du bord du marécage au point courant
+            int pointPassageX; // Coordonnée X du point de passage marécage
+            int pointPassageY; // Coordonnée Y du point de passage marécage
+
+            //Point courant dans le marécage
+            if (x > 9 && y < 10)
+            {
+                PCM = true;
+            }
+            // Point final dans le marécage
+            if(Form1.xfinal > 9 && Form1.yfinal < 10)
+            {
+                PFM = true;
+            }
+            //Les deux points sont dans le marécage
+            if(PFM && PCM)
+            {
+                return distEucl*3;
+            }
+            //Le point courant est seul dans le marécage
+            else if (PCM && !PFM)
+            {
+                //Le point est dans la partie haute du marécage
+                if(x+y<=19)
+                {
+                    pointPassageX = x-(x-10);
+                    distBM = Math.Abs(x - pointPassageX)*3;
+                    distBMPF = Math.Abs(pointPassageX - Form1.xfinal) + Math.Abs(y - Form1.yfinal);
+                    return (distBM+distBMPF);
+                }
+                //Le point est dans la partie basse du marécage
+                else
+                {
+                    pointPassageY = y-(y-10);
+                    distBM = Math.Abs(y - pointPassageY)*3;
+                    distBMPF = Math.Abs(x - Form1.xfinal) + Math.Abs(pointPassageY - Form1.yfinal);
+                    return (distBM+distBMPF);
+                }
+            }
+            //Le point final est seul dans le marécage
+            else if(PFM && !PCM) 
+            {
+                //Le point est dans la partie haute du marécage
+                if(Form1.xfinal+Form1.yfinal<=19)
+                {
+                    pointPassageX = Form1.xfinal-(Form1.xfinal-10);
+                    distBM = Math.Abs(Form1.xfinal - pointPassageX)*3;
+                    distBMPC = Math.Abs(pointPassageX - x) + Math.Abs(y - Form1.yfinal);
+                    return (distBM+distBMPC);
+                }
+                //Le point est dans la partie basse du marécage
+                else
+                {
+                    pointPassageY = Form1.yfinal-(Form1.yfinal-10);
+                    distBM = Math.Abs(Form1.yfinal - pointPassageY)*3;
+                    distBMPC = Math.Abs(Form1.xfinal - x) + Math.Abs(y - pointPassageY);
+                    return (distBM+distBMPC);
+                }
+            }
+            else
+            {
+                return(distEucl);
+            }
 
             //Problème 2 : Décomposition en 2 sous problèmes en passant par un point de passage
             /*
@@ -104,7 +174,7 @@ namespace ProjetIA2022
 
 
             //Problème 3 : 
-            
+            /*
             bool PCCercle = true; // Le point courant est dans le cercle
             bool PFCercle = true; // Le point final est dans le cercle
 
@@ -257,12 +327,12 @@ namespace ProjetIA2022
                             //Si le point est dans le marécage le coût du trajet
                             //entre PPF et PF est multiplié par 3 comme pour
                             //le trajet réel.
-                            return (3 * distanceH["PCtoPPF"] + distanceH["PPFtoPPC"] + distanceH["PPCtoPF"]);
+                            return (3 * distanceH["PCtoPPF"] + distanceH["PPCtoPPF"] + distanceH["PPCtoPF"]);
                         }
                         //Non marécages
                         else
                         {
-                            return (distanceH["PCtoPPM"] + 3 * distanceH["PPMtoPPF"] + distanceH["PPFtoPPC"] + distanceH["PPCtoPF"]);
+                            return (distanceH["PCtoPPM"] + 3 * distanceH["PPFtoPPM"] + distanceH["PPCtoPPF"] + distanceH["PPCtoPF"]);
                         }
                     }
                 }
@@ -384,7 +454,7 @@ namespace ProjetIA2022
                         }
                     }
                 }
-            }
+            }*/
         }
 
         public override string ToString()
