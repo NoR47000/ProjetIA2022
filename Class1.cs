@@ -63,26 +63,24 @@ namespace ProjetIA2022
 
         public override double CalculeHCost()
         {
-            //x et y du noeud examiné
-            //Form1.xinitial et Form1.yinitial qui sont accessible car static
-            //Form1.xfinal 
-            //Form1.yfinal
-            //matrice[x,y] //indique le type de case (-1 si marécage, 0 si rien, -2 si obstacle) 
+            // x et y : coordonnées du point courant
+            // Form1.xinitial,... sont accessibles car static et donnent accés aux coordonnées point initial et point final
+            // matrice[x,y] //indique le type de case (-1 si marécage, 0 si rien, -2 si obstacle) 
 
-            //Problème 1 : 
+            // Problème 1 : 
             
             bool PCM = false; // Point courant pas dans le marécage
             bool PFM = false; // Point final pas dans le marécage
 
-            double distEucl =Math.Abs(this.x - Form1.xfinal) + Math.Abs(this.y - Form1.yfinal); // Distance euclidienne 
+            double distEucl =Math.Abs(this.x - Form1.xfinal) + Math.Abs(this.y - Form1.yfinal); // Distance euclidienne entre PC et PF
             double distBM ; // Distance du point au bord du marécage
             double distBMPF ; // Distance du bord du marécage au point final
             double distBMPC ; // Distance du bord du marécage au point courant
             int pointPassageX; // Coordonnée X du point de passage marécage
             int pointPassageY; // Coordonnée Y du point de passage marécage
 
-            //Point courant dans le marécage
-            if (x > 9 && y < 10)
+            // Point courant dans le marécage
+            if (x > 9 && y < 10) //autre solution matrice[x,y]==-1
             {
                 PCM = true;
             }
@@ -91,15 +89,16 @@ namespace ProjetIA2022
             {
                 PFM = true;
             }
-            //Les deux points sont dans le marécage
+            
+            // Les deux points sont dans le marécage
             if(PFM && PCM)
             {
                 return distEucl*3;
             }
-            //Le point courant est seul dans le marécage
+            // Le point courant est seul dans le marécage
             else if (PCM && !PFM)
             {
-                //Le point est dans la partie haute du marécage
+                // Le point est dans la partie haute du marécage
                 if(x+y<=19)
                 {
                     pointPassageX = x-(x-10);
@@ -107,7 +106,7 @@ namespace ProjetIA2022
                     distBMPF = Math.Abs(pointPassageX - Form1.xfinal) + Math.Abs(y - Form1.yfinal);
                     return (distBM+distBMPF);
                 }
-                //Le point est dans la partie basse du marécage
+                // Le point est dans la partie basse du marécage
                 else
                 {
                     pointPassageY = y-(y-10);
@@ -116,10 +115,10 @@ namespace ProjetIA2022
                     return (distBM+distBMPF);
                 }
             }
-            //Le point final est seul dans le marécage
+            // Le point final est seul dans le marécage
             else if(PFM && !PCM) 
             {
-                //Le point est dans la partie haute du marécage
+                // Le point est dans la partie haute du marécage
                 if(Form1.xfinal+Form1.yfinal<=19)
                 {
                     pointPassageX = Form1.xfinal-(Form1.xfinal-10);
@@ -127,7 +126,7 @@ namespace ProjetIA2022
                     distBMPC = Math.Abs(pointPassageX - x) + Math.Abs(y - Form1.yfinal);
                     return (distBM+distBMPC);
                 }
-                //Le point est dans la partie basse du marécage
+                // Le point est dans la partie basse du marécage
                 else
                 {
                     pointPassageY = Form1.yfinal-(Form1.yfinal-10);
@@ -141,8 +140,9 @@ namespace ProjetIA2022
                 return(distEucl);
             }
 
-            //Problème 2 : Décomposition en 2 sous problèmes en passant par un point de passage
-            /*
+            // Problème 2 : Décomposition en 2 sous problèmes en passant par un point de passage
+            
+            // Création d'un noeud au niveau du seul point pour traverser la frontière
             Node2 pointPassageFrontiere = new Node2();
             pointPassageFrontiere.x = 10;
             pointPassageFrontiere.y = 8;
@@ -161,20 +161,19 @@ namespace ProjetIA2022
                 PFCote = false;
             }
 
-            // Test si du même côté
+            // Les deux points sont du même côté
             if (PCCote != PFCote)
             {
                 return (Math.Abs(x - pointPassageFrontiere.x) + Math.Abs(y - pointPassageFrontiere.y) + Math.Abs(pointPassageFrontiere.x - Form1.xfinal) + Math.Abs(pointPassageFrontiere.y - Form1.yfinal));
             }
+            // Les points sont de part et d'autre de la frontière
             else
             {
                 return (Math.Abs(x - Form1.xfinal) + Math.Abs(y - Form1.yfinal));
             }
-            */
 
-
-            //Problème 3 : 
-            /*
+            // Problème 3 : Décomposition en plusieurs sous problèmes en fonction de la position relative des points 
+            
             bool PCCercle = true; // Le point courant est dans le cercle
             bool PFCercle = true; // Le point final est dans le cercle
 
@@ -184,12 +183,12 @@ namespace ProjetIA2022
             bool PFMarecages = true; // Le point est dans le marécage
             bool PCMarecages = true; // Le point est dans le marécage
 
-            //Initialisation PCCercle
+            // Initialisation PCCercle
             if (!(x >= 3 && x <= 8) || !(y >= 4 && y <= 9))
             {
                 PCCercle = false;
             }
-            //Initialisation PFCercle
+            // Initialisation PFCercle
             if (!(Form1.xfinal >= 3 && Form1.xfinal <= 8) || !(Form1.yfinal >= 4 && Form1.yfinal <= 9))
             {
                 PFCercle = false;
@@ -206,12 +205,12 @@ namespace ProjetIA2022
                 PFCote = false;
             }
 
-            //Initialisation PFMarecages
+            // Initialisation PFMarecages
             if (Form1.yfinal >= 10)
             {
                 PFMarecages = false;
             }
-            //Initialisation PCMarecages
+            // Initialisation PCMarecages
             if (y >= 10)
             {
                 PCMarecages = false;
@@ -227,7 +226,7 @@ namespace ProjetIA2022
             pointPassageCercle.x = 2;
             pointPassageCercle.y = 6;
 
-            // Défintion d'un point de sorti du marégage
+            // Défintion d'un point de sorti arbitraire du marégage
             Node2 pointPassageMarecage = new Node2();
             pointPassageMarecage.x = 12;
             pointPassageMarecage.y = 10;
@@ -272,34 +271,34 @@ namespace ProjetIA2022
             distanceH.Add("PCtoPPM", h9);
 
 
-            //PC dans le cercle
+            // PC dans le cercle
             if (PCCercle)
             {
-                //PF dans le cercle
+                // PF dans le cercle
                 if (PFCercle)
                 {
                     return (distanceH["PCtoPF"]);
                 }
-                //PF en dehors du cercle
+                // PF en dehors du cercle
                 else
                 {
-                    //PF et PC du même côté
+                    // PF et PC du même côté
                     if (PFCote == PCCote)
                     {
                         return (distanceH["PCtoPPC"] + distanceH["PPCtoPF"]);
                     }
-                    //PF/PC côté différent
+                    // PF/PC côté différent
                     else
                     {
-                        //Marécages
+                        // PF est dans le marécage
                         if (PFMarecages)
                         {
-                            //Si le point est dans le marécage le coût du trajet
-                            //entre PPF et PF est multiplié par 3 comme pour
-                            //le trajet réel.
+                            // Si le point est dans le marécage le coût du trajet
+                            // entre PPF et PF est multiplié par 3 comme pour
+                            // le trajet réel.
                             return (distanceH["PCtoPPC"] + distanceH["PPCtoPPF"] + 3 * distanceH["PPFtoPF"]);
                         }
-                        //PF est situé en dessous du marégage
+                        // PF est situé en dessous du marégage
                         else
                         {
                             return (distanceH["PCtoPPC"] + distanceH["PPCtoPPF"] + 3 * distanceH["PPFtoPPM"] + distanceH["PPMtoPF"]);
@@ -307,39 +306,39 @@ namespace ProjetIA2022
                     }
                 }
             }
-            //PC pas dans le cercle
+            // PC pas dans le cercle
             else
             {
-                //PF dans le cercle 
+                // PF dans le cercle 
                 if (PFCercle)
                 {
-                    //PF et PC même côté
+                    // PF et PC même côté
                     if (PFCote == PCCote)
                     {
                         return (distanceH["PCtoPPC"] + distanceH["PPCtoPF"]);
                     }
-                    //PF/PC côté différent
+                    // PF/PC côté différent
                     else
                     {
-                        //Marécages
+                        // PC est dans le marécage
                         if (PCMarecages)
                         {
-                            //Si le point est dans le marécage le coût du trajet
-                            //entre PPF et PF est multiplié par 3 comme pour
-                            //le trajet réel.
+                            // Si le point est dans le marécage le coût du trajet
+                            // entre PPF et PC est multiplié par 3 comme pour
+                            // le trajet réel.
                             return (3 * distanceH["PCtoPPF"] + distanceH["PPCtoPPF"] + distanceH["PPCtoPF"]);
                         }
-                        //Non marécages
+                        // PC en dessous du marécage
                         else
                         {
                             return (distanceH["PCtoPPM"] + 3 * distanceH["PPFtoPPM"] + distanceH["PPCtoPPF"] + distanceH["PPCtoPF"]);
                         }
                     }
                 }
-                //PF en dehors du cercle 
+                // PF en dehors du cercle 
                 else
                 {
-                    //PF et PC même côté
+                    // PF et PC même côté
                     if (PFCote == PCCote)
                     {
                         // Dans le cas où les points sont du côté gauche
@@ -359,12 +358,12 @@ namespace ProjetIA2022
                         // On va regarder où ils sont placés par rapport au marécage
                         else
                         {
-                            //PC et PF dans le marécage
+                            // PC et PF dans le marécage
                             if (PCMarecages && PFMarecages)
                             {
                                 return (3 * distanceH["PCtoPF"]);
                             }
-                            //Un des deux en dehors
+                            // Un des deux en dehors
                             else if (PCMarecages != PFMarecages)
                             {
                                 // C'est PC qui est dans le marécage
@@ -385,13 +384,13 @@ namespace ProjetIA2022
                             }
                         }
                     }
-                    //PF/PC côté différent 
+                    // PF/PC côté différent 
                     else
                     {
-                        //PFCercle est à gauche donc PC à droite
+                        // PF est à gauche donc PC à droite
                         if (!PFCote)
                         {
-                            //On doit contourner le cercle 
+                            // Condition sur PF qui nous indique de contourner le cercle 
                             if (Form1.yfinal > 6)
                             {
                                 // PC est dans le marécage
@@ -405,7 +404,7 @@ namespace ProjetIA2022
                                     return (distanceH["PCtoPPM"] + 3 * distanceH["PPFtoPPM"] + distanceH["PPCtoPPF"] + distanceH["PPCtoPF"]);
                                 }
                             }
-                            //On ne doit contourner le cercle 
+                            // On ne doit pas contourner le cercle 
                             else
                             {
                                 // PC est dans le marécage
@@ -420,10 +419,10 @@ namespace ProjetIA2022
                                 }
                             }
                         }
-                        //PFCercle est à droite donc PC à gauche
+                        // PF est à droite donc PC à gauche
                         else
                         {
-                            //On doit contourner Cercle 
+                            // Condition sur PC qui nous indique de contourner le cercle  
                             if (y > 6)
                             {
                                 // PF est dans le marécage
@@ -454,7 +453,7 @@ namespace ProjetIA2022
                         }
                     }
                 }
-            }*/
+            }
         }
 
         public override string ToString()
