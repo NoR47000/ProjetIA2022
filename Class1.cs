@@ -80,12 +80,12 @@ namespace ProjetIA2022
             int pointPassageY; // Coordonnée Y du point de passage marécage
 
             // Point courant dans le marécage
-            if (x > 9 && y < 10) //autre solution matrice[x,y]==-1
+            if (matrice[x,y] == -1)
             {
                 PCM = true;
             }
             // Point final dans le marécage
-            if(Form1.xfinal > 9 && Form1.yfinal < 10)
+            if(matrice[Form1.xfinalForm1.yfinal] == -1)
             {
                 PFM = true;
             }
@@ -206,12 +206,12 @@ namespace ProjetIA2022
             }
 
             // Initialisation PFMarecages
-            if (Form1.yfinal >= 10)
+            if (matrice[Form1.xfinal,Form1.yfinal] == -1)
             {
                 PFMarecages = false;
             }
             // Initialisation PCMarecages
-            if (y >= 10)
+            if (matrice[x,y] == -1)
             {
                 PCMarecages = false;
             }
