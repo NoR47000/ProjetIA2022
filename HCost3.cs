@@ -32,12 +32,12 @@ if (Form1.xfinal <= 10)
 }
 
 // Initialisation PFMarecages
-if (matrice[Form1.xfinal, Form1.yfinal] == -1)
+if (Form1.matrice[Form1.xfinal, Form1.yfinal] == -1)
 {
     PFMarecages = false;
 }
 // Initialisation PCMarecages
-if (matrice[x, y] == -1)
+if (Form1.matrice[x, y] == -1)
 {
     PCMarecages = false;
 }
@@ -54,17 +54,17 @@ pointPassageCercle.y = 6;
 
 // Défintion d'un point de sorti arbitraire du marégage
 Node2 pointPassageMarecage = new Node2();
-pointPassageMarecage.x = 12;
+pointPassageMarecage.x = 15;
 pointPassageMarecage.y = 10;
 
 // Distance point courant/point final
-double h1 = DistReel(x,y,Form1.xfinal,Form1.yfinal)
+double h1 = DistReel(x, y, Form1.xfinal, Form1.yfinal);
 
 // Distance point courant/point passage frontière
-double h2 = DistReel(x, y, pointPassageFrontiere.x, pointPassageFrontiere.y)
+double h2 = DistReel(x, y, pointPassageFrontiere.x, pointPassageFrontiere.y);
 
 // Distance point courant/point passage cercle
-double h3 = DistReel(x,y,pointPassageCercle.x,pointPassageCercle.y);
+double h3 = DistReel(x, y, pointPassageCercle.x, pointPassageCercle.y);
 
 // Distance point passage cercle/ point passage frontière
 double h4 = DistReel(pointPassageCercle.x, pointPassageCercle.y, pointPassageFrontiere.x, pointPassageFrontiere.y);
