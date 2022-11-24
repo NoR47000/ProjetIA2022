@@ -1,78 +1,13 @@
-Ôªøusing System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.Remoting.Lifetime;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProjetIA2022
-{
-    public class Node2 : GenericNode
-    {
-        public int x;
-        public int y;
-
-        // M√©thodes abstrates, donc √† surcharger obligatoirement avec override dans une classe fille
-        public override bool IsEqual(GenericNode N2)
-        {
-            Node2 N2bis = (Node2)N2;
-
-            return (x == N2bis.x) && (y == N2bis.y);
-        }
-
-        public override double GetArcCost(GenericNode N2)
-        {
-            // Ici, N2 ne peut √™tre qu'1 des 8 voisins, inutile de le v√©rifier
-            Node2 N2bis = (Node2)N2;
-            double dist = Math.Sqrt((N2bis.x - x) * (N2bis.x - x) + (N2bis.y - y) * (N2bis.y - y));
-            if (Form1.matrice[x, y] == -1)
-                // On triple le co√ªt car on est dans un mar√©cage
-                dist = dist * 3;
-            return dist;
-        }
-
-        public override bool EndState()
-        {
-            return (x == Form1.xfinal) && (y == Form1.yfinal);
-        }
-
-        public override List<GenericNode> GetListSucc()
-        {
-            List<GenericNode> lsucc = new List<GenericNode>();
-
-            for (int dx = -1; dx <= 1; dx++)
-            {
-                for (int dy = -1; dy <= 1; dy++)
-                {
-                    if ((x + dx >= 0) && (x + dx < Form1.nbcolonnes)
-                            && (y + dy >= 0) && (y + dy < Form1.nblignes) && ((dx != 0) || (dy != 0)))
-                        if (Form1.matrice[x + dx, y + dy] > -2)
-                        {
-                            Node2 newnode2 = new Node2();
-                            newnode2.x = x + dx;
-                            newnode2.y = y + dy;
-                            lsucc.Add(newnode2);
-                        }
-                }
-
-            }
-            return lsucc;
-        }
-
-
-        public override double CalculeHCost()
-        {
-           // Probl√®me 3 : D√©composition en plusieurs sous probl√®mes en fonction de la position relative des points 
+// ProblËme 3 : DÈcomposition en plusieurs sous problËmes en fonction de la position relative des points 
 
 bool PCCercle = true; // Le point courant est dans le cercle
 bool PFCercle = true; // Le point final est dans le cercle
 
-bool PCCote = true; // Le point courant est du c√¥t√© droit
-bool PFCote = true; // Le point final est du c√¥t√© droit
+bool PCCote = true; // Le point courant est du cÙtÈ droit
+bool PFCote = true; // Le point final est du cÙtÈ droit
 
-bool PFMarecages = true; // Le point est dans le mar√©cage
-bool PCMarecages = true; // Le point est dans le mar√©cage
+bool PFMarecages = true; // Le point est dans le marÈcage
+bool PCMarecages = true; // Le point est dans le marÈcage
 
 // Initialisation PCCercle
 if (!(x >= 3 && x <= 8) || !(y >= 4 && y <= 9))
@@ -97,59 +32,59 @@ if (Form1.xfinal <= 10)
 }
 
 // Initialisation PFMarecages
-if (Form1.matrice[Form1.xfinal, Form1.yfinal] == -1)
+if (matrice[Form1.xfinal, Form1.yfinal] == -1)
 {
     PFMarecages = false;
 }
 // Initialisation PCMarecages
-if (Form1.matrice[x, y] == -1)
+if (matrice[x, y] == -1)
 {
     PCMarecages = false;
 }
 
-// D√©finition du point de passage obligatoire si on veut changer de c√¥t√©
+// DÈfinition du point de passage obligatoire si on veut changer de cÙtÈ
 Node2 pointPassageFrontiere = new Node2();
 pointPassageFrontiere.x = 10;
 pointPassageFrontiere.y = 0;
 
-// D√©fintion du point de passage obligatoire si on veut entrer ou sortir du cercle 
+// DÈfintion du point de passage obligatoire si on veut entrer ou sortir du cercle 
 Node2 pointPassageCercle = new Node2();
 pointPassageCercle.x = 2;
 pointPassageCercle.y = 6;
 
-// D√©fintion d'un point de sorti arbitraire du mar√©gage
+// DÈfintion d'un point de sorti arbitraire du marÈgage
 Node2 pointPassageMarecage = new Node2();
 pointPassageMarecage.x = 12;
 pointPassageMarecage.y = 10;
 
 // Distance point courant/point final
-double h1 = DistReel(x,y,Form1.xfinal,Form1.yfinal);
+double h1 = DistReel(x,y,Form1.xfinal,Form1.yfinal)
 
-// Distance point courant/point passage fronti√®re
-double h2 = DistReel(x, y, pointPassageFrontiere.x, pointPassageFrontiere.y);
+// Distance point courant/point passage frontiËre
+double h2 = DistReel(x, y, pointPassageFrontiere.x, pointPassageFrontiere.y)
 
 // Distance point courant/point passage cercle
 double h3 = DistReel(x,y,pointPassageCercle.x,pointPassageCercle.y);
 
-// Distance point passage cercle/ point passage fronti√®re
+// Distance point passage cercle/ point passage frontiËre
 double h4 = DistReel(pointPassageCercle.x, pointPassageCercle.y, pointPassageFrontiere.x, pointPassageFrontiere.y);
 
-// Distance point passage fronti√®re/point final
+// Distance point passage frontiËre/point final
 double h5 = DistReel(pointPassageFrontiere.x, pointPassageFrontiere.y, Form1.xfinal, Form1.yfinal);
 
 // Distance point passage cerlce/point final
 double h6 = DistReel(pointPassageCercle.x, pointPassageCercle.y, Form1.xfinal, Form1.yfinal);
 
-// Distance point passage fronti√®re/point passage mar√©cage
+// Distance point passage frontiËre/point passage marÈcage
 double h7 = DistReel(pointPassageFrontiere.x, pointPassageFrontiere.y, pointPassageMarecage.x, pointPassageMarecage.y);
 
-// Distance point passage mar√©cage/point final
+// Distance point passage marÈcage/point final
 double h8 = DistReel(pointPassageMarecage.x, pointPassageMarecage.y, Form1.xfinal, Form1.yfinal);
 
-// Distance point courant/point passage mar√©cage
+// Distance point courant/point passage marÈcage
 double h9 = DistReel(x, y, pointPassageMarecage.y, pointPassageMarecage.x);
 
-// Creation d'un dictionnaire associant une distance particuli√®re √† sa valeur.
+// Creation d'un dictionnaire associant une distance particuliËre ‡ sa valeur.
 Dictionary<string, double> distanceH = new Dictionary<string, double>();
 distanceH.Add("PCtoPF", h1);
 distanceH.Add("PCtoPPF", h2);
@@ -173,23 +108,23 @@ if (PCCercle)
     // PF en dehors du cercle
     else
     {
-        // PF et PC du m√™me c√¥t√©
+        // PF et PC du mÍme cÙtÈ
         if (PFCote == PCCote)
         {
             return (distanceH["PCtoPPC"] + distanceH["PPCtoPF"]);
         }
-        // PF/PC c√¥t√© diff√©rent
+        // PF/PC cÙtÈ diffÈrent
         else
         {
-            // PF est dans le mar√©cage
+            // PF est dans le marÈcage
             if (PFMarecages)
             {
-                // Si le point est dans le mar√©cage le co√ªt du trajet
-                // entre PPF et PF est multipli√© par 3 comme pour
-                // le trajet r√©el.
+                // Si le point est dans le marÈcage le co˚t du trajet
+                // entre PPF et PF est multipliÈ par 3 comme pour
+                // le trajet rÈel.
                 return (distanceH["PCtoPPC"] + distanceH["PPCtoPPF"] + 3 * distanceH["PPFtoPF"]);
             }
-            // PF est situ√© en dessous du mar√©gage
+            // PF est situÈ en dessous du marÈgage
             else
             {
                 return (distanceH["PCtoPPC"] + distanceH["PPCtoPPF"] + 3 * distanceH["PPFtoPPM"] + distanceH["PPMtoPF"]);
@@ -203,23 +138,23 @@ else
     // PF dans le cercle 
     if (PFCercle)
     {
-        // PF et PC m√™me c√¥t√©
+        // PF et PC mÍme cÙtÈ
         if (PFCote == PCCote)
         {
             return (distanceH["PCtoPPC"] + distanceH["PPCtoPF"]);
         }
-        // PF/PC c√¥t√© diff√©rent
+        // PF/PC cÙtÈ diffÈrent
         else
         {
-            // PC est dans le mar√©cage
+            // PC est dans le marÈcage
             if (PCMarecages)
             {
-                // Si le point est dans le mar√©cage le co√ªt du trajet
-                // entre PPF et PC est multipli√© par 3 comme pour
-                // le trajet r√©el.
+                // Si le point est dans le marÈcage le co˚t du trajet
+                // entre PPF et PC est multipliÈ par 3 comme pour
+                // le trajet rÈel.
                 return (3 * distanceH["PCtoPPF"] + distanceH["PPCtoPPF"] + distanceH["PPCtoPF"]);
             }
-            // PC en dessous du mar√©cage
+            // PC en dessous du marÈcage
             else
             {
                 return (distanceH["PCtoPPM"] + 3 * distanceH["PPFtoPPM"] + distanceH["PPCtoPPF"] + distanceH["PPCtoPF"]);
@@ -229,10 +164,10 @@ else
     // PF en dehors du cercle 
     else
     {
-        // PF et PC m√™me c√¥t√©
+        // PF et PC mÍme cÙtÈ
         if (PFCote == PCCote)
         {
-            // Dans le cas o√π les points sont du c√¥t√© gauche
+            // Dans le cas o˘ les points sont du cÙtÈ gauche
             // On va regarder s'il est necessaire de contourner le cercle
             if (!PFCote)
             {
@@ -245,11 +180,11 @@ else
                     return (distanceH["PCtoPF"]);
                 }
             }
-            // Dans le cas o√π les points sont du c√¥t√© droit
-            // On va regarder o√π ils sont plac√©s par rapport au mar√©cage
+            // Dans le cas o˘ les points sont du cÙtÈ droit
+            // On va regarder o˘ ils sont placÈs par rapport au marÈcage
             else
             {
-                // PC et PF dans le mar√©cage
+                // PC et PF dans le marÈcage
                 if (PCMarecages && PFMarecages)
                 {
                     return (3 * distanceH["PCtoPF"]);
@@ -257,12 +192,12 @@ else
                 // Un des deux en dehors
                 else if (PCMarecages != PFMarecages)
                 {
-                    // C'est PC qui est dans le mar√©cage
+                    // C'est PC qui est dans le marÈcage
                     if (PCMarecages)
                     {
                         return (3 * distanceH["PCtoPPM"] + distanceH["PPMtoPF"]);
                     }
-                    // C'est PF qui est dans le mar√©cage
+                    // C'est PF qui est dans le marÈcage
                     else
                     {
                         return (distanceH["PCtoPPM"] + 3 * distanceH["PPMtoPF"]);
@@ -275,21 +210,21 @@ else
                 }
             }
         }
-        // PF/PC c√¥t√© diff√©rent 
+        // PF/PC cÙtÈ diffÈrent 
         else
         {
-            // PF est √† gauche donc PC √† droite
+            // PF est ‡ gauche donc PC ‡ droite
             if (!PFCote)
             {
                 // Condition sur PF qui nous indique de contourner le cercle 
                 if (Form1.yfinal > 6)
                 {
-                    // PC est dans le mar√©cage
+                    // PC est dans le marÈcage
                     if (PCMarecages)
                     {
                         return (3 * distanceH["PCtoPPF"] + distanceH["PPCtoPPF"] + distanceH["PPCtoPF"]);
                     }
-                    // PC est en dessous du mar√©cage
+                    // PC est en dessous du marÈcage
                     else
                     {
                         return (distanceH["PCtoPPM"] + 3 * distanceH["PPFtoPPM"] + distanceH["PPCtoPPF"] + distanceH["PPCtoPF"]);
@@ -298,30 +233,30 @@ else
                 // On ne doit pas contourner le cercle 
                 else
                 {
-                    // PC est dans le mar√©cage
+                    // PC est dans le marÈcage
                     if (PCMarecages)
                     {
                         return (3 * distanceH["PCtoPPF"] + distanceH["PPFtoPF"]);
                     }
-                    // PC est en dessous du mar√©cage
+                    // PC est en dessous du marÈcage
                     else
                     {
                         return (distanceH["PCtoPPM"] + 3 * distanceH["PPMtoPPF"] + distanceH["PPFtoPF"]);
                     }
                 }
             }
-            // PF est √† droite donc PC √† gauche
+            // PF est ‡ droite donc PC ‡ gauche
             else
             {
                 // Condition sur PC qui nous indique de contourner le cercle  
                 if (y > 6)
                 {
-                    // PF est dans le mar√©cage
+                    // PF est dans le marÈcage
                     if (PFMarecages)
                     {
                         return (distanceH["PCtoPPC"] + distanceH["PPCtoPPF"] + 3 * distanceH["PPFtoPF"]);
                     }
-                    // PF est en dessous du mar√©cage
+                    // PF est en dessous du marÈcage
                     else
                     {
                         return (distanceH["PCtoPPC"] + distanceH["PPCtoPPF"] + 3 * distanceH["PPFtoPPM"] + distanceH["PPMtoPF"]);
@@ -330,50 +265,18 @@ else
                 // On ne doit pas contourner le cercle
                 else
                 {
-                    // PF est dans le mar√©cage
+                    // PF est dans le marÈcage
                     if (PFMarecages)
                     {
                         return (distanceH["PCtoPPF"] + 3 * distanceH["PPFtoPF"]);
                     }
-                    // PF est en dessous du mar√©cage
+                    // PF est en dessous du marÈcage
                     else
                     {
                         return (distanceH["PCtoPPF"] + 3 * distanceH["PPFtoPPM"] + distanceH["PPMtoPF"]);
                     }
                 }
             }
-        }
-    }
-}
-
-           
-        }
-
-        public double DistReel(int xInit, int yInit,int xFinal,int yFinal)
-        {
-            //Ordre initial final pas d'importance distance inversible
-            int deplacementIntermediaire = Math.Min(Math.Abs(xInit-xFinal),Math.Abs(yInit-yFinal));
-            int deplacementFinal = Math.Max(Math.Abs(xInit-xFinal),Math.Abs(yInit-yFinal));
-            int resteAParcourir = deplacementFinal-deplacementIntermediaire;
-            double distDiag = Math.Sqrt((Math.Pow(deplacementIntermediaire,2))*2);
-            double distDroite = Math.Sqrt((Math.Pow(resteAParcourir,2)));
-            
-            return (distDiag+distDroite); // Distance r√©elle diagonale plus distance r√©elle en droite
-        }
-
-        public double DistEuclidienne(int xInit, int yInit,int xFinal,int yFinal)
-        {
-            return Math.Sqrt(Math.Pow(xInit-xFinal,2) + Math.Pow(yInit-yFinal,2));
-        }
-
-        public double DistManhattan(int xInit, int yInit,int xFinal,int yFinal)
-        {
-            return Math.Abs(xInit-xFinal) + Math.Abs(yInit-yFinal);
-        }
-
-        public override string ToString()
-        {
-            return Convert.ToString(x) + "," + Convert.ToString(y);
         }
     }
 }
