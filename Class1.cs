@@ -69,80 +69,70 @@ namespace ProjetIA2022
 
             // Problème 1 : 
             
-            bool PCM = false; // Point courant pas dans le marécage
-            bool PFM = false; // Point final pas dans le marécage
+            //GCost caculé en fonction distEuclidienne<distManhattan ainsi pour toute nos estimation 
+            //on devra prendre comme distance la distance euclidienne 
 
-            double distEucl =Math.Abs(this.x - Form1.xfinal) + Math.Abs(this.y - Form1.yfinal); // Distance euclidienne entre PC et PF
-            double distBM ; // Distance du point au bord du marécage
-            double distBMPF ; // Distance du bord du marécage au point final
-            double distBMPC ; // Distance du bord du marécage au point courant
-            int pointPassageX; // Coordonnée X du point de passage marécage
-            int pointPassageY; // Coordonnée Y du point de passage marécage
+            // Problème 1 : 
 
-            // Point courant dans le marécage
-            if (matrice[x,y] == -1)
+            //Dans ce problème nous n'avons  pas le droit de tester la
+            //présence d’un marécage à une position donnée, notre heuristique 
+            //doit rester valable mêmesi on change la zone marécageuse.
+
+            //Pour cela la détection de franchissement de marécage dans notre
+            //heuristique doit ce faire exclusivement grâce à la valuer de matrice[x,y]
+            //On doit alors créer un chemin passant par des coordonnées entière et 
+            //vérifier le type de case rencontrée
+
+            //Pour avoir un chemin de case entière on va prendre en distance de référence
+            //la distance de Manhattan entre 2 points.
+
+            //Distance Manhattan entre PC et PF (un nombre de cases)
+            double dist = DistEuclidienne(x,y,Form1.xfinal,Form1.yfinal); 
+
+            //Compteur du nombre de marécage rencontré sur le chemin
+            int cmptMarecages =0;
+            int cmptTotal =0;
+
+            //Variable intermédiare pour ne pas modifier les coordonnées du point courant
+            int cheminX = x;
+            int cheminY = y;
+            while(cheminX!=Form1.xfinal || cheminY!=Form1.yfinal)
             {
-                PCM = true;
-            }
-            // Point final dans le marécage
-            if(matrice[Form1.xfinalForm1.yfinal] == -1)
-            {
-                PFM = true;
-            }
-            
-            // Les deux points sont dans le marécage
-            if(PFM && PCM)
-            {
-                return distEucl*3;
-            }
-            // Le point courant est seul dans le marécage
-            else if (PCM && !PFM)
-            {
-                // Le point est dans la partie haute du marécage
-                if(x+y<=19)
+                cmptTotal+=1;
+                if(cheminX<Form1.xfinal)
                 {
-                    pointPassageX = x-(x-10);
-                    distBM = Math.Abs(x - pointPassageX)*3;
-                    distBMPF = Math.Abs(pointPassageX - Form1.xfinal) + Math.Abs(y - Form1.yfinal);
-                    return (distBM+distBMPF);
+                    cheminX+=1;      
                 }
-                // Le point est dans la partie basse du marécage
-                else
+                else if(cheminX>Form1.xfinal)
                 {
-                    pointPassageY = y-(y-10);
-                    distBM = Math.Abs(y - pointPassageY)*3;
-                    distBMPF = Math.Abs(x - Form1.xfinal) + Math.Abs(pointPassageY - Form1.yfinal);
-                    return (distBM+distBMPF);
+                    cheminX-=1;
                 }
-            }
-            // Le point final est seul dans le marécage
-            else if(PFM && !PCM) 
-            {
-                // Le point est dans la partie haute du marécage
-                if(Form1.xfinal+Form1.yfinal<=19)
+
+                if(cheminY<Form1.yfinal)
                 {
-                    pointPassageX = Form1.xfinal-(Form1.xfinal-10);
-                    distBM = Math.Abs(Form1.xfinal - pointPassageX)*3;
-                    distBMPC = Math.Abs(pointPassageX - x) + Math.Abs(y - Form1.yfinal);
-                    return (distBM+distBMPC);
+                    cheminY+=1;
                 }
-                // Le point est dans la partie basse du marécage
-                else
+                else if(cheminY>Form1.yfinal)
                 {
-                    pointPassageY = Form1.yfinal-(Form1.yfinal-10);
-                    distBM = Math.Abs(Form1.yfinal - pointPassageY)*3;
-                    distBMPC = Math.Abs(Form1.xfinal - x) + Math.Abs(y - pointPassageY);
-                    return (distBM+distBMPC);
+                    cheminY-=1;
                 }
-            }
-            else
-            {
-                return(distEucl);
+                Console.WriteLine(cheminX+" "+cheminY);
+                if (Form1.matrice[cheminX, cheminY] == -1)
+                {
+                    cmptMarecages+=1;
+                }
             }
 
+            //La distance totale est alors la somme du nombre de marécage rencontré fois trois
+            //plus le reste des cases à parcourir pour arriver à PF
+            return(3*cmptMarecages*(dist/cmptTotal)+(cmptTotal-cmptMarecages)*(dist/cmptTotal));
+
+            //Enoncer le problème si on est en haut à gauche et bas à droite du marécage
+            //Chemin le plus court on sort du marécage donc vu que l'estimation passe par
+            //le marécage on aura une estimation plus élevée que le chemin reel. 
             // Problème 2 : Décomposition en 2 sous problèmes en passant par un point de passage 
 
-            
+            /*
             // Création d'un noeud au niveau du seul point pour traverser la frontière
             Node2 pointPassageFrontiere = new Node2();
             pointPassageFrontiere.x = 10;
@@ -454,7 +444,16 @@ namespace ProjetIA2022
                         }
                     }
                 }
-            }
+            }*/
+        }
+        public double DistEuclidienne(int xInit, int yInit,int xFinal,int yFinal)
+        {
+            int deplacementIntermediaire = Math.Min(Math.Abs(xInit-xFinal),Math.Abs(yInit-yFinal));
+            int deplacementFinal = Math.Max(Math.Abs(xInit-xFinal),Math.Abs(yInit-yFinal));
+            int resteAParcourir = deplacementFinal-deplacementIntermediaire;
+            double dist = Math.Sqrt((Math.Pow(deplacementIntermediaire,2))*2);
+            
+            return dist+resteAParcourir; // Distance réelle diagonale plus distance réelle en droite
         }
 
         public override string ToString()
