@@ -140,7 +140,8 @@ namespace ProjetIA2022
                 return(distEucl);
             }
 
-            // Problème 2 : Décomposition en 2 sous problèmes en passant par un point de passage
+            // Problème 2 : Décomposition en 2 sous problèmes en passant par un point de passage 
+
             
             // Création d'un noeud au niveau du seul point pour traverser la frontière
             Node2 pointPassageFrontiere = new Node2();
