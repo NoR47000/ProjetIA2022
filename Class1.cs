@@ -63,47 +63,6 @@ namespace ProjetIA2022
 
         public override double CalculeHCost()
         {
-            
-            //Distance Euclidienne entre PC et PF (un nombre de cases)
-            double dist = DistReel(x, y, Form1.xfinal, Form1.yfinal);
-            //Compteur du nombre de marécage rencontré sur le chemin
-            int cmptMarecages = 0;
-            int cmptTotal = 1;
-
-            if (Form1.matrice[x,y]==-1 && Form1.matrice[Form1.xfinal, Form1.yfinal] == -1)
-            {
-                return dist*3;
-            } 
-            else if(Form1.matrice[x,y] != Form1.matrice[Form1.xfinal, Form1.yfinal])
-            {
-                //Variable intermédiare pour ne pas modifier les coordonnées du point courant
-                int cheminX = x;
-                int cheminY = y;
-                while(!((cheminX == Form1.xfinal) && (cheminY == Form1.yfinal)))
-                {
-                    cmptMarecages++;
-                    if(cheminX - Form1.xfinal!=0)
-                    {
-                        int signeX = (Form1.xfinal-cheminX)/Math.Abs(cheminX-Form1.xfinal);
-                        cheminX += signeX;
-                    }
-                    if(cheminY - Form1.yfinal!=0)
-                    {
-                        int signeY = (Form1.yfinal-cheminY)/Math.Abs(cheminY-Form1.yfinal);
-                        cheminY += signeY;
-                    }
-                    if (Form1.matrice[cheminX, cheminY] == -1)
-                    {
-                        cmptMarecages += 1;
-                    }
-                }
-                double distUnitaire = (double)dist / cmptTotal;
-                return (dist-distUnitaire + 3 * cmptMarecages*distUnitaire);
-            }
-            else
-            {
-                return dist;
-            }
 
         }
 
@@ -117,6 +76,39 @@ namespace ProjetIA2022
             double distDroite = Math.Sqrt((Math.Pow(resteAParcourir,2)));
             
             return (distDiag+distDroite); // Distance réelle diagonale plus distance réelle en droite
+        }
+
+        public double DistAvecMarecage(int xDebut, int yDebut, double distance, int xFin, int yFin)
+        {
+            int cmptMarecages = 0;
+            int cmptTotal = 1;
+
+            //Variable intermédiare pour ne pas modifier les coordonnées du point courant
+            int cheminX = xDebut;
+            int cheminY = yDebut;
+            while (!((cheminX == xFin) && (cheminY == yFin)))
+            {
+                cmptMarecages++;
+                if (cheminX - xFin != 0)
+                {
+                    int signeX = (xFin - cheminX) / Math.Abs(cheminX - xFin);
+                    cheminX += signeX;
+                }
+                if (cheminY - yFin != 0)
+                {
+                    int signeY = (yFin - cheminY) / Math.Abs(cheminY - yFin);
+                    cheminY += signeY;
+                }
+                if (Form1.matrice[cheminX, cheminY] == -1)
+                {
+                    cmptMarecages += 1;
+                }
+            }
+            //La distance totale est alors la somme du nombre de marécage rencontré fois trois
+            //plus le reste des cases à parcourir pour arriver à PF
+            double distUnitaire = (double)distance / cmptTotal;
+            distance = distance - distUnitaire * cmptMarecages + 3 * cmptMarecages * distUnitaire;
+            return distance;
         }
 
         public double DistEuclidienne(int xInit, int yInit,int xFinal,int yFinal)

@@ -5,7 +5,7 @@
 
 //Dans ce problème nous n'avons  pas le droit de tester la
 //présence d’un marécage à une position donnée, notre heuristique 
-//doit rester valable mêmesi on change la zone marécageuse.
+//doit rester valable même si on change la zone marécageuse.
 
 //Pour cela la détection de franchissement de marécage dans notre
 //heuristique doit ce faire exclusivement grâce à la valuer de matrice[x,y]
@@ -51,7 +51,7 @@ else if (Form1.matrice[x, y] != Form1.matrice[Form1.xfinal, Form1.yfinal])
     //La distance totale est alors la somme du nombre de marécage rencontré fois trois
     //plus le reste des cases à parcourir pour arriver à PF
     double distUnitaire = (double)dist / cmptTotal;
-    return (dist - distUnitaire + 3 * cmptMarecages * distUnitaire);
+    return (dist - distUnitaire*cmptMarecages + 3 * cmptMarecages * distUnitaire);
 }
 else
 {
