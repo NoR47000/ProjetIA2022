@@ -26,12 +26,12 @@ if (Form1.xfinal <= 10)
     PFCote = false;
 }
 
-// Les deux points sont du même côté
+// Les points sont de part et d'autre de la frontière
 if (PCCote != PFCote)
 {
     return (DistReel(x, y, pointPassageFrontiere.x, pointPassageFrontiere.y) + DistReel(pointPassageFrontiere.x, pointPassageFrontiere.y, Form1.xfinal, Form1.yfinal));
 }
-// Les points sont de part et d'autre de la frontière
+// Les deux points sont du même côté
 else
 {
     return DistReel(x, y, Form1.xfinal, Form1.yfinal);
