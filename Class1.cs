@@ -66,16 +66,16 @@ namespace ProjetIA2022
 
         }
 
-        public double DistReel(int xInit, int yInit,int xFinal,int yFinal)
+        public double DistReel(int xInit, int yInit, int xFinal, int yFinal)
         {
             //Ordre initial final pas d'importance distance inversible
-            int deplacementIntermediaire = Math.Min(Math.Abs(xInit-xFinal),Math.Abs(yInit-yFinal));
-            int deplacementFinal = Math.Max(Math.Abs(xInit-xFinal),Math.Abs(yInit-yFinal));
-            int resteAParcourir = deplacementFinal-deplacementIntermediaire;
-            double distDiag = Math.Sqrt((Math.Pow(deplacementIntermediaire,2))*2);
-            double distDroite = Math.Sqrt((Math.Pow(resteAParcourir,2)));
-            
-            return (distDiag+distDroite); // Distance réelle diagonale plus distance réelle en droite
+            int deplacementIntermediaire = Math.Min(Math.Abs(xInit - xFinal), Math.Abs(yInit - yFinal));
+            int deplacementFinal = Math.Max(Math.Abs(xInit - xFinal), Math.Abs(yInit - yFinal));
+            int resteAParcourir = deplacementFinal - deplacementIntermediaire;
+            double distDiag = Math.Sqrt((Math.Pow(deplacementIntermediaire, 2)) * 2);
+            double distDroite = Math.Sqrt((Math.Pow(resteAParcourir, 2)));
+
+            return (distDiag + distDroite); // Distance réelle diagonale plus distance réelle en ligne droite
         }
 
         public double DistAvecMarecage(int xDebut, int yDebut, double distance, int xFin, int yFin)
@@ -111,14 +111,14 @@ namespace ProjetIA2022
             return distance;
         }
 
-        public double DistEuclidienne(int xInit, int yInit,int xFinal,int yFinal)
+        public double DistEuclidienne(int xInit, int yInit, int xFinal, int yFinal)
         {
-            return Math.Sqrt(Math.Pow(xInit-xFinal,2) + Math.Pow(yInit-yFinal,2));
+            return Math.Sqrt(Math.Pow(xInit - xFinal, 2) + Math.Pow(yInit - yFinal, 2));
         }
 
-        public double DistManhattan(int xInit, int yInit,int xFinal,int yFinal)
+        public double DistManhattan(int xInit, int yInit, int xFinal, int yFinal)
         {
-            return Math.Abs(xInit-xFinal) + Math.Abs(yInit-yFinal);
+            return Math.Abs(xInit - xFinal) + Math.Abs(yInit - yFinal);
         }
 
         public override string ToString()
