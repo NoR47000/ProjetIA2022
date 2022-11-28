@@ -1,4 +1,4 @@
-// Probl�me 3 : D�composition en plusieurs sous probl�mes en fonction de la position relative des points 
+// Problème 3 : Décomposition en plusieurs sous probl�mes en fonction de la position relative des points 
 
 bool PCCercle = true; // Le point courant est dans le cercle
 bool PFCercle = true; // Le point final est dans le cercle

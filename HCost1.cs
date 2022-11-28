@@ -13,7 +13,7 @@
 //vérifier le type de case rencontrée
 
 //Pour avoir un chemin de case entière on va prendre en distance de référence
-//la distance de Manhattan entre 2 points.
+//la distance euclidienne entre 2 points.
 
 //Distance Euclidienne entre PC et PF (un nombre de cases)
 double distEuclidienne = DistReel(x, y, Form1.xfinal, Form1.yfinal);
