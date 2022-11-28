@@ -88,7 +88,7 @@ namespace ProjetIA2022
             int cheminY = yDebut;
             while (!((cheminX == xFin) && (cheminY == yFin)))
             {
-                cmptMarecages++;
+                cmptTotal++;
                 if (cheminX - xFin != 0)
                 {
                     int signeX = (xFin - cheminX) / Math.Abs(cheminX - xFin);
