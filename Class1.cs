@@ -63,7 +63,7 @@ namespace ProjetIA2022
 
         public override double CalculeHCost()
         {
-
+            
         }
 
         public double DistReel(int xInit, int yInit, int xFinal, int yFinal)

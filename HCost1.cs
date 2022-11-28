@@ -17,5 +17,6 @@
 
 //Distance Euclidienne entre PC et PF (un nombre de cases)
 double distEuclidienne = DistReel(x, y, Form1.xfinal, Form1.yfinal);
-double distAvecMarécages = distAvecMarécages(x, y, distEuclidienne, Form1.xfinal, Form1.yfinal);
+double distAvecMarécages = DistAvecMarecage(x, y, distEuclidienne, Form1.xfinal, Form1.yfinal);
+return distAvecMarécages;
 
